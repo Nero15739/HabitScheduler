@@ -1,0 +1,23 @@
+services:
+  habitscheduler:
+    build: .
+    image: habitscheduler:latest
+    container_name: habitscheduler
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3000}:3000"
+    environment:
+      # Public URL of your instance (used to decide on secure cookies). Set when serving over HTTPS.
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      # Set to "false" to stop new sign-ups after you've created your own account. Admins can also toggle this in Settings.
+      ALLOW_REGISTRATION: ${ALLOW_REGISTRATION:-true}
+      # "open-meteo" (default, no API key needed) or "mock" for demos/offline use.
+      WEATHER_PROVIDER: ${WEATHER_PROVIDER:-open-meteo}
+      # "zenquotes" (default, public API with local fallback) or "local" (bundled quotes only, no network).
+      QUOTE_PROVIDER: ${QUOTE_PROVIDER:-zenquotes}
+      DATABASE_PATH: /data/habits.db
+    volumes:
+      - habit-data:/data
+
+volumes:
+  habit-data:
