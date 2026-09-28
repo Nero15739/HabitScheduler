@@ -11,10 +11,10 @@ export function MindsetChart({ days, data }: { days: string[]; data: Mind[] }) {
   return (
     <div className="relative h-full w-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={rows} margin={{ top: 8, right: 12, left: -14, bottom: 0 }}>
+        <LineChart data={rows} margin={{ top: 8, right: 16, left: -8, bottom: 0 }}>
           <CartesianGrid vertical={false} strokeDasharray="3 3" />
           <XAxis dataKey="day" tickLine={false} axisLine={false} />
-          <YAxis domain={[1, 10]} ticks={[1, 5, 10]} tickLine={false} axisLine={false} />
+          <YAxis domain={[1, 10]} ticks={[1, 5, 10]} tickLine={false} axisLine={false} width={36} />
           <Tooltip
             cursor={{ stroke: "var(--border-strong)" }}
             contentStyle={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, fontSize: 12, color: "var(--text)" }}

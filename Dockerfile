@@ -1,13 +1,16 @@
 # syntax=docker/dockerfile:1
+# Override with --build-arg NODE_IMAGE=... to pull from a mirror (e.g. public.ecr.aws/docker/library/node:22-bookworm-slim).
+ARG NODE_IMAGE=node:22-bookworm-slim
+
 # ---- deps ----
-FROM node:22-bookworm-slim AS deps
+FROM ${NODE_IMAGE} AS deps
 WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ && rm -rf /var/lib/apt/lists/*
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 
 # ---- build ----
-FROM node:22-bookworm-slim AS build
+FROM ${NODE_IMAGE} AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
@@ -15,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # ---- runtime ----
-FROM node:22-bookworm-slim AS runner
+FROM ${NODE_IMAGE} AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
